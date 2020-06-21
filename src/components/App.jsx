@@ -1,12 +1,13 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-extra-bind */
 /* eslint-disable no-undef */
-import React, { Component } from "react"
+import React, { Component } from "react";
 import Modal from "react-modal";
 class TicTac extends Component {
   constructor() {
     super();
     this.clicked = this.clicked.bind(this);
+    this.resetState = this.resetState.bind(this);
   }
   state = {
     cubes: [
@@ -26,6 +27,26 @@ class TicTac extends Component {
     winner: "",
     modalIsOpen: false
   };
+  resetState() {
+    this.setState({
+      cubes: [
+        { id: 0, value: "", isSet: false },
+        { id: 1, value: "", isSet: false },
+        { id: 2, value: "", isSet: false },
+        { id: 3, value: "", isSet: false },
+        { id: 4, value: "", isSet: false },
+        { id: 5, value: "", isSet: false },
+        { id: 6, value: "", isSet: false },
+        { id: 7, value: "", isSet: false },
+        { id: 8, value: "", isSet: false }
+      ],
+      cubesOf: { X: [], O: [] },
+      howManyChecked: 0,
+      currentPlayer: "",
+      winner: "",
+      modalIsOpen: false
+    });
+  }
   clicked(id) {
     if (this.state.cubes[id].isSet === false) {
       let player = this.state.howManyChecked % 2 === 0 ? "X" : "O";
@@ -62,12 +83,11 @@ class TicTac extends Component {
                   cubesOf[currentPlayer].includes(checkArr[i][1]) &&
                   cubesOf[currentPlayer].includes(checkArr[i][2])
                 ) {
-                  this.setState({winner:currentPlayer,modalIsOpen:true})
+                  this.setState({ winner: currentPlayer, modalIsOpen: true });
                 }
               }
-              if(this.state.howManyChecked === 9)
-              {
-                this.setState({modalIsOpen:true})
+              if (this.state.howManyChecked === 9) {
+                this.setState({ modalIsOpen: true });
               }
             }.bind(this),
             100
@@ -120,8 +140,17 @@ class TicTac extends Component {
           </div>
         </div>
         <Modal isOpen={this.state.modalIsOpen} className="modalP">
-          {this.state.winner === '' ? <h2> Match tie</h2>:<h2>{this.state.winner} has won</h2> }
-          <button style={{backgroundColor:'yellow'}} onClick={()=>location.reload()}>Play Again</button>
+          {this.state.winner === "" ? (
+            <h2> Match tie</h2>
+          ) : (
+            <h2>{this.state.winner} has won</h2>
+          )}
+          <button
+            style={{ backgroundColor: "yellow" }}
+            onClick={() => this.resetState()}
+          >
+            Play Again
+          </button>
         </Modal>
       </React.Fragment>
     );
